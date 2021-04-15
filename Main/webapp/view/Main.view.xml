@@ -25,9 +25,14 @@
                                     </Carousel>
                                     <Button text="{i18n>showHelloButonText}" press="onSayHello"/>
                                     <Input 
-                                        value="{HelloPanel>/recipient/name}"
+                                        value="{
+                                            path: 'helloPanel>/recipient/amount',
+                                            type: 'sap.ui.model.type.Float',
+                                            formatOptions: {minFractionDigits: 2},
+                                            constraints: {maximum : 3000}
+                                        }"
                                         description="Hello {HelloPanel>/recipient/name}"
-                                        valueLiveUpdate="true"
+                                        valueLiveUpdate="false"
                                         width="60%"/>
                                 </IconTabFilter>
                                 <IconTabFilter id="layouts" text="Containers and Layouts">
@@ -74,21 +79,74 @@
                                 </IconTabFilter>
                                 <IconTabFilter 
                                     id="es5" 
-                                    text="data binding">
+                                    text="Data Binding">
                                     <List 
                                         id="Products"
                                         headerText="Products"
                                         width="auto"
-                                        items="{/ProductSet}">
+                                        items="{
+                                            path : '/ProductSet',
+                                            sorter : {
+                                                path : 'Category',
+                                                group : true
+                                            },
+                                            parameters: {
+                                                expand: 'ToSupplier'
+                                            }
+                                        }"
+                                        growing="true"
+                                        growingThreshold="5"
+                                        growingScrollToLoad="false"
+                                        >
+                                        <headerToolbar>
+                                            <Toolbar>
+                                                <Title text="{i18n>productListTitle}"/>
+                                                    <ToolbarSpacer/>
+                                                <SearchField width="50%" search="onFilterProducts"/>
+                                            </Toolbar>
+                                        </headerToolbar>
                                         <items>
                                             <ObjectListItem 
+                                            press="onItemSelected"
+                                            type="Active"
                                                 title="{Name}" 
-                                                number="{Price}"
+                                                number="{
+                                                    parts: [
+                                                        { path: 'Price' },
+                                                        { path: 'CurrencyCode' }
+                                                    ], type: 'sap.ui.model.type.Currency',
+                                                    formatOptions: {
+                                                        showMeasure: false
+                                                    }
+                                                }"
                                                 intro="{ProductID}"
-                                                numberUnit="{CurrencyCode}">
+                                                numberUnit="{CurrencyCode}"
+                                                numberState="{= ${Price} > 5 ? 'Error' : 'Success'}">
+                                                <firstStatus>
+                                                    <ObjectStatus 
+                                                        text="{ parts: [
+                                                                {path: '/WeightUnit'},
+                                                                {path: 'WeightMeasure'}
+                                                            ], formatter: '.formatter.delivery'}"
+                                                        />
+                                                </firstStatus>
+                                                <secondStatus>
+                                                    <ObjectStatus title="Delivered from" text="{ToSupplier/Address/City}"/>
+                                                </secondStatus>
                                             </ObjectListItem>
                                         </items>
                                     </List>
+                                    <Panel 
+                                        id="productDetailsPanel"
+                                        headerText="Product Details"
+                                        visible="false">
+                                        <l:Grid >
+                                            <Text text="Product ID {ProductID}"/>
+                                            <Text text="Name {Name}"/>
+                                            <Text text="Description {Description}"/>
+                                            <Text text="Price {Pricing}"/>
+                                        </l:Grid>
+                                    </Panel>
                                 </IconTabFilter>
                             </items>
                         </IconTabBar>

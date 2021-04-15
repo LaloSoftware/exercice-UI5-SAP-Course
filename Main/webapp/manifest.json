@@ -50,7 +50,8 @@
 			"type": "XML",
 			"async": true,
 			"id": "Main"
-		},
+        },
+        "handleValidation": true,
 		"dependencies": {
 			"minUI5Version": "1.60.1",
 			"libs": {
