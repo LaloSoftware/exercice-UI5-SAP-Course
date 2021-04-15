@@ -1,0 +1,45 @@
+{
+  "version": "0.2.0",
+  "configurations": [
+    {
+      "name": "Run blank",
+      "type": "node",
+      "request": "launch",
+      "program": "${workspaceFolder}/blank-approuter/node_modules/@sap/html5-repo-mock/index.js",
+      "args": [
+        "--standalone",
+        "/nsMain/index.html",
+        "--ui5",
+        "{\"version\":\".\"}"
+      ],
+      "cwd": "${workspaceFolder}/Main",
+      "env": {
+        "PORT": "6004",
+        "MOCK_LOOKUP_DIRS": "[\"webapp\"]",
+        "run.config": "{\"handlerId\":\"ui5_run_config_handler_id\",\"runnableId\":\"/home/user/projects/blank/Main\"}"
+      },
+      "envFile": "${workspaceFolder}/Main/.env1",
+      "preLaunchTask": "Build blank"
+    },
+    {
+      "name": "Run blank-es5",
+      "type": "node",
+      "request": "launch",
+      "program": "${workspaceFolder}/blank-approuter/node_modules/@sap/html5-repo-mock/index.js",
+      "args": [
+        "--standalone",
+        "/nsMain/index.html",
+        "--ui5",
+        "{\"version\":\".\"}"
+      ],
+      "cwd": "${workspaceFolder}/Main",
+      "env": {
+        "PORT": "6004",
+        "MOCK_LOOKUP_DIRS": "[\"webapp\"]",
+        "run.config": "{\"handlerId\":\"ui5_run_config_handler_id\",\"runnableId\":\"/home/user/projects/blank/Main\"}"
+      },
+      "envFile": "${workspaceFolder}/Main/.env2",
+      "preLaunchTask": "Build blank"
+    }
+  ]
+}
